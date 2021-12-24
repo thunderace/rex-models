@@ -5,7 +5,7 @@
   "main": "umd/URDFLoader.js",
   "module": "src/URDFLoader.js",
   "scripts": {
-    "start": "concurrently --kill-others \"rollup -c -w\" \"cd .. && static-server\"",
+    "start": "concurrently --kill-others \"rollup -c -w\" \"static-server -d\"",
     "build": "rollup -c"
   },
   "files": [

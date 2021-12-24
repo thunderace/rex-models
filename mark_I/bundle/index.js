@@ -61853,7 +61853,6 @@
 	const gallopToggle = document.getElementById('do-gallop');
 	const initToggle = document.getElementById('do-init');
 	const restToggle = document.getElementById('do-rest');
-	const drillToggle = document.getElementById('do-drill');
 
 	const DEG2RAD = Math.PI / 180;
 	const RAD2DEG = 1 / DEG2RAD;
@@ -61864,24 +61863,12 @@
 	    motor_shoulder_FR: 0.0, motor_leg_FR: -0.88, foot_motor_FR: 1.3,
 	    motor_shoulder_RL: 0.0, motor_leg_RL: -0.88, foot_motor_RL: 1.3,
 	    motor_shoulder_RR: 0.0, motor_leg_RR: -0.88, foot_motor_RR: 1.3,
-	    motor_arm_m1: -1.57, motor_arm_m2: -1.57, motor_arm_m3: 0.0,
-	    motor_arm_m4: 0.0, motor_arm_m5: 1.57, motor_arm_m6: -1.57
 	};
 	let rest_pose = {
 	    motor_shoulder_FL: 0.0, motor_leg_FL: -1.57, foot_motor_FL: 3.14,
 	    motor_shoulder_FR: 0.0, motor_leg_FR: -1.57, foot_motor_FR: 3.14,
 	    motor_shoulder_RL: 0.0, motor_leg_RL: -1.57, foot_motor_RL: 3.14,
 	    motor_shoulder_RR: 0.0, motor_leg_RR: -1.57, foot_motor_RR: 3.14,
-	    motor_arm_m1: -1.57, motor_arm_m2: -1.57, motor_arm_m3: 0.0,
-	    motor_arm_m4: 0.0, motor_arm_m5: 1.57, motor_arm_m6: -1.57
-	};
-	let drill_pose = {
-	    motor_shoulder_FL: 0.0, motor_leg_FL: -1.57, foot_motor_FL: 3.14,
-	    motor_shoulder_FR: 0.0, motor_leg_FR: -1.57, foot_motor_FR: 3.14,
-	    motor_shoulder_RL: 0.0, motor_leg_RL: -1.57, foot_motor_RL: 3.14,
-	    motor_shoulder_RR: 0.0, motor_leg_RR: -1.57, foot_motor_RR: 3.14,
-	    motor_arm_m1: -1.57, motor_arm_m2: 1.57, motor_arm_m3: 0.0,
-	    motor_arm_m4: 0.0, motor_arm_m5: -1.57, motor_arm_m6: 0.0
 	};
 	var walk_json;
 	var gallop_json;
@@ -62046,6 +62033,7 @@
 	    viewer.loadMeshFunc = (path, manager, done) => {
 
 	        const ext = path.split(/\./g).pop().toLowerCase();
+	        console.log(path);
 	        switch (ext) {
 
 	            case 'gltf':
@@ -62108,7 +62096,7 @@
 	        .map(key => r.joints[key])
 	        .sort()
 	        .forEach(joint => {
-	            if (String(joint.name).includes("motor") && !String(joint.name).includes("arm")) {
+	            if (String(joint.name).includes("motor")) {
 	                if (gait_counter in walk_json) {
 	                    viewer.setAngle(joint.name, walk_json[gait_counter]['signal'][count]);
 	                    count += 1;
@@ -62139,7 +62127,7 @@
 	        .map(key => r.joints[key])
 	        .sort()
 	        .forEach(joint => {
-	            if (String(joint.name).includes("motor") && !String(joint.name).includes("arm")) {
+	            if (String(joint.name).includes("motor")) {
 	                if (gait_counter in gallop_json) {
 	                    viewer.setAngle(joint.name, gallop_json[gait_counter]['signal'][count]);
 	                    count += 1;
@@ -62174,14 +62162,6 @@
 	    }
 	};
 
-	const setDrillPose = () => {
-	    if (viewer.robot.visible === false) {
-	        showModel();
-	    }
-	    for (var joint in drill_pose) {
-	        viewer.setAngle(joint, drill_pose[joint]);
-	    }
-	};
 
 	const updateLoop = () => {
 
@@ -62197,12 +62177,7 @@
 	    else if(restToggle.classList.contains('checked')) {
 	        setRestPose();
 	    }
-	    else if(drillToggle.classList.contains('checked')) {
-	        setDrillPose();
-	    }
-
 	    requestAnimationFrame(updateLoop);
-
 	};
 
 	document.querySelectorAll('#urdf-options li[urdf]').forEach(el => {
@@ -62227,7 +62202,6 @@
 	        gallopToggle.classList.remove('checked');
 	        initToggle.classList.remove('checked');
 	        restToggle.classList.remove('checked');
-	        drillToggle.classList.remove('checked');
 	    });
 
 	    gallopToggle.addEventListener('click', () => {
@@ -62235,7 +62209,6 @@
 	        animToggle.classList.remove('checked');
 	        initToggle.classList.remove('checked');
 	        restToggle.classList.remove('checked');
-	        drillToggle.classList.remove('checked');
 	    });
 
 	    initToggle.addEventListener('click', () => {
@@ -62243,7 +62216,6 @@
 	        animToggle.classList.remove('checked');
 	        gallopToggle.classList.remove('checked');
 	        restToggle.classList.remove('checked');
-	        drillToggle.classList.remove('checked');
 	    });
 
 	    restToggle.addEventListener('click', () => {
@@ -62251,16 +62223,8 @@
 	        animToggle.classList.remove('checked');
 	        gallopToggle.classList.remove('checked');
 	        initToggle.classList.remove('checked');
-	        drillToggle.classList.remove('checked');
 	    });
 
-	    drillToggle.addEventListener('click', () => {
-	        drillToggle.classList.toggle('checked');
-	        restToggle.classList.remove('checked');
-	        animToggle.classList.remove('checked');
-	        gallopToggle.classList.remove('checked');
-	        initToggle.classList.remove('checked');
-	    });
 
 	    // stop the animation if user tried to manipulate the model
 	    viewer.addEventListener('manipulate-start', e => {
@@ -62268,7 +62232,6 @@
 	        gallopToggle.classList.remove('checked');
 	        initToggle.classList.remove('checked');
 	        restToggle.classList.remove('checked');
-	        drillToggle.classList.remove('checked');
 	    });
 	    viewer.addEventListener('urdf-processed', e => setInitialPose());
 	    updateLoop();

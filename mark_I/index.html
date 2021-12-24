@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta charset="utf-8"/>
 
-        <title>Rex Model</title>
+        <title>Raymond Model</title>
 
         <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.4.3/webcomponents-bundle.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet"/>
@@ -14,8 +14,7 @@
     <body tabindex="0">
         <div id="menu">
             <ul id="urdf-options">
-                <li urdf="./assets/rex_rover.urdf" color="#009688">Rex - Rover</li>
-                <li urdf="./assets/rex.urdf" color="#009688">Rex - Mark II</li>
+                <li urdf="./assets2/spotmini.urdf" color="#009688">Raymond</li>
             </ul>
             
             <div id="controls" class="hidden">
@@ -23,7 +22,6 @@
                 <div>Poses:</div>
                 <div id="do-init" class="toggle">Stand</div>
                 <div id="do-rest" class="toggle">Rest</div>
-                <div id="do-drill" class="toggle">Drill</div>
                 <div>Gaits:</div>
                 <div id="do-animate" class="toggle">Walk</div>
                 <div id="do-gallop" class="toggle">Gallop</div>
@@ -31,11 +29,6 @@
                 <ul></ul> 
             </div>
             <footer>
-                <p>Author: Nicola Russo<br>
-                <a href="mailto:dott.nicolarusso@gmail.com">dott.nicolarusso@gmail.com</a></p>
-                <p>Leg design: Open Dynamic Robot Initiative<br>
-                <p>Body original design: Deok-yeon Kim</p>
-                <p>Arm original meshes: Poppy Project</p>
             </footer>     
         </div>
         <urdf-viewer up="+Z" display-shadow tabindex="0"></urdf-viewer>
